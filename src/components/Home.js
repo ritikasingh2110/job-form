@@ -12,7 +12,7 @@ const Home = () => {
         <div className="hero-content">
           <h1>Welcome to <span>WhiteCircle!</span></h1>
           <p>Your Future Starts Here. Explore careers and services designed for innovation.</p>
-          <Link to="/JobApplicationForm" className="cta-btn">Apply for a Job</Link>
+          <Link to="/Portal" className="cta-btn">Find Job</Link>
         </div>
       </section>
 

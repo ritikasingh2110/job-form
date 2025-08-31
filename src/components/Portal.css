@@ -1,0 +1,109 @@
+/* ================= HEADER ================= */
+.header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333333;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #666666;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  font-family: 'Jost', sans-serif;
+}
+
+.nav-link:hover {
+  color: #333333;
+}
+
+/* ================= JOB SECTION ================= */
+.job-section {
+  background-color: #f9fafb;
+  padding: 3rem 1.5rem;
+}
+
+.job-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #333333;
+}
+
+.job-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Medium screens (2 columns) */
+@media (min-width: 640px) {
+  .job-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Large screens (4 columns) */
+@media (min-width: 1024px) {
+  .job-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ================= CARD ================= */
+.card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 0.5rem;
+}
+
+.card-description {
+  font-size: 0.95rem;
+  color: #555555;
+  margin-bottom: 1rem;
+}
+
+.card-count {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #0077cc;
+}
