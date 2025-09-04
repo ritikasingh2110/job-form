@@ -1,53 +1,74 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 import "./FindJob.css";
 
 export default function Jobs() {
   const { id } = useParams();
+  const jobFunction = decodeURIComponent(id);
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // Dummy job details (per category)
-  const jobDetails = {
-    1: [
-      {
-        location: "BANGALORE, INFOSYS LIMITED",
-        title: "Q2-SAP ABAP Consultant",
-        experience: "6 to 9 Years",
-        skills: "SAP ABAP, Adobe Forms, HANA, OData, Workflow, S/4 HANA",
-        responsibilities: "SAP Technical Consultant with 4-8 yrs of relevant experience. Expertise on ABAP on HANA and Fiori."
-      },
-      {
-        location: "PUNE, INFOSYS LIMITED",
-        title: "Kafka Integration",
-        experience: "7 to 20 Years",
-        skills: "Cloud Platform, Microservices, Java, Apache Kafka, Springboot",
-        responsibilities: "Design and develop reliable, testable, and maintainable software. Mentor and guide colleagues."
-      }
-    ],
-    2: [
-      {
-        location: "HYDERABAD, INFOSYS LIMITED",
-        title: "Engineering Analyst",
-        experience: "3 to 6 Years",
-        skills: "Python, AI/ML, Cloud Services",
-        responsibilities: "Build scalable solutions with AI/ML integration for enterprise apps."
-      }
-    ]
-    // add more job data per id if needed
-  };
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const jobsCollection = collection(db, "jobs");
+        const q = query(jobsCollection, where("jobFunction", "==", jobFunction));
+        const querySnapshot = await getDocs(q);
 
-  const jobs = jobDetails[id] || [];
+        const jobsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setJobs(jobsData);
+      } catch (error) {
+        console.error("❌ Error fetching jobs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, [jobFunction]);
+
+  if (loading) {
+    return (
+      <div className="jobs-loading">
+        <div className="spinner"></div>
+        <p>Loading jobs...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="jobs-page">
-      <h2>{jobs.length} jobs found</h2>
+      <h2 className="jobs-title">
+        {jobs.length > 0
+          ? `${jobs.length} jobs found for "${jobFunction}"`
+          : `No jobs found for "${jobFunction}"`}
+      </h2>
+
       <div className="jobs-container">
-        {jobs.map((job, index) => (
-          <div key={index} className="job-card">
-            <p className="job-location">{job.location}</p>
-            <h3>{job.title}</h3>
-            <p><strong>Work Experience:</strong> {job.experience}</p>
+        {jobs.map((job) => (
+          <div key={job.id} className="job-card">
+            <p><strong>Title:</strong> {job.title}</p>
+            <p><strong>Company:</strong> {job.company}</p>
+            <p><strong>Location:</strong> {job.location}</p>
+            <p><strong>Type:</strong> {job.type}</p>
+            <p><strong>Salary:</strong> {job.salary} LPA</p>
             <p><strong>Skills:</strong> {job.skills}</p>
             <p><strong>Responsibilities:</strong> {job.responsibilities}</p>
+            <p><strong>Description:</strong> {job.description || "Not provided"}</p>
+
+            <button
+              className="apply-btn"
+              onClick={() => navigate(`/apply/${job.id}`, { state: job })}
+            >
+              Apply Now
+            </button>
           </div>
         ))}
       </div>

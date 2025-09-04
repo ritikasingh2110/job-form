@@ -1,6 +1,6 @@
 // src/firestoreHelpers.js
 import { db } from '../firebase';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
 import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 
 
@@ -34,7 +34,6 @@ export const saveJobApplication = async (formData, resumeId) => {
 
 
 
-
 // Get all job applications
 export const getAllApplications = async () => {
   try {
@@ -60,3 +59,24 @@ export const updateApplication = async (id, updatedData) => {
   await updateDoc(docRef, updatedData);
 };
 
+
+//Jobs Collection
+
+const jobsCollection = collection(db, "jobs");
+
+export const getJobsByType = async (jobType) => {
+  try {
+    const q = query(jobsCollection, where("jobType", "==", jobType));
+    const querySnapshot = await getDocs(q);
+
+    const jobs = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return jobs;
+  } catch (error) {
+    console.error("Error retrieving jobs:", error);
+    throw error;
+  }
+};

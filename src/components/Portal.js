@@ -1,5 +1,7 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 import "./Portal.css";
 
 function Header() {
@@ -9,10 +11,10 @@ function Header() {
         <h1 className="logo">JobFinder</h1>
         <nav>
           <ul className="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Jobs</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><Link to="/Home">Home</Link></li>
+            <li><Link to="/Jobs">Jobs</Link></li>
+            <li><Link to="/About">About</Link></li>
+            <li><Link to="/Contact">Contact</Link></li>
           </ul>
         </nav>
       </div>
@@ -20,40 +22,68 @@ function Header() {
   );
 }
 
-function Card({ title, description, jobsCount, id }) {
+function Card({ title, description, jobsCount, type }) {
   const navigate = useNavigate();
 
   return (
-    <div className="card" onClick={() => navigate(`/jobs/${id}`)}>
-      <h2 className="card-title">{title}</h2>
+    <div
+      className="card"
+      onClick={() => navigate(`/jobs/${encodeURIComponent(type)}`)} // ✅ navigate with jobFunction
+    >
+      <div className="card-header">
+        <h2 className="card-title">{title}</h2>
+        <span className="card-count">{jobsCount} Jobs</span>
+      </div>
       <p className="card-description">{description}</p>
-      <span className="card-count">{jobsCount} Jobs</span>
     </div>
   );
 }
 
 function JobSection() {
+  const [jobCounts, setJobCounts] = useState({});
+
+  // ✅ match with Firestore "jobFunction" field
   const jobs = [
-    { id: 1, title: "Consultant", description: "Positions related to Consultant", jobsCount: 284 },
-    { id: 2, title: "Engineering Services", description: "Positions related to Core Technology Services", jobsCount: 215 },
-    { id: 3, title: "Enterprise Application Services", description: "Positions related to Core Technology Services", jobsCount: 207 },
-    { id: 4, title: "Application Development and Maintenance", description: "Positions related to Core Technology Services", jobsCount: 171 },
-    { id: 5, title: "Developer", description: "Positions related to Developer", jobsCount: 125 },
-    { id: 6, title: "Cloud and Infrastructure Services", description: "Positions related to Core Technology Services", jobsCount: 87 },
-    { id: 7, title: "Data and Analytics", description: "Positions related to Core Technology Services", jobsCount: 85 },
-    { id: 8, title: "Infosys Quality Engineering", description: "Positions related to Technology Assurance", jobsCount: 83 },
-    { id: 9, title: "Digital Experience (DX)", description: "Positions related to Core Technology Services", jobsCount: 72 },
-    { id: 10, title: "Testing", description: "Positions related to Testing", jobsCount: 43 },
-    { id: 11, title: "Business Consulting", description: "Positions related to Sales & Client Services", jobsCount: 19 },
-    { id: 12, title: "Cyber Security", description: "Positions related to Core Technology Services", jobsCount: 18 },
+    { type: "Consultant", title: "Consultant", description: "Positions related to Consultant" },
+    { type: "Engineering Services", title: "Engineering Services", description: "Positions related to Core Technology Services" },
+    { type: "Enterprise Application Services", title: "Enterprise Application Services", description: "Positions related to Core Technology Services" },
+    { type: "Application Development and Maintenance", title: "Application Development and Maintenance", description: "Positions related to Core Technology Services" },
+    { type: "Developer", title: "Developer", description: "Positions related to Developer" },
+    { type: "Cloud and Infrastructure Services", title: "Cloud and Infrastructure Services", description: "Positions related to Core Technology Services" },
+    { type: "Data and Analytics", title: "Data and Analytics", description: "Positions related to Core Technology Services" },
+    { type: "Infosys Quality Engineering", title: "Infosys Quality Engineering", description: "Positions related to Technology Assurance" },
+    { type: "Digital Experience (DX)", title: "Digital Experience (DX)", description: "Positions related to Core Technology Services" },
+    { type: "Testing", title: "Testing", description: "Positions related to Testing" },
+    { type: "Business Consulting", title: "Business Consulting", description: "Positions related to Sales & Client Services" },
+    { type: "Cyber Security", title: "Cyber Security", description: "Positions related to Core Technology Services" },
   ];
+
+  useEffect(() => {
+    const fetchJobCounts = async () => {
+      const counts = {};
+      for (const job of jobs) {
+        const q = query(collection(db, "jobs"), where("jobFunction", "==", job.type));
+        const snapshot = await getDocs(q);
+        counts[job.type] = snapshot.size;
+      }
+      setJobCounts(counts);
+    };
+
+    fetchJobCounts();
+  }, []);
 
   return (
     <section className="job-section">
       <h1 className="job-title">Featured Jobs</h1>
       <div className="job-grid">
         {jobs.map((job) => (
-          <Card key={job.id} id={job.id} title={job.title} description={job.description} jobsCount={job.jobsCount} />
+          <Card
+            key={job.type}
+            type={job.type}
+            title={job.title}
+            description={job.description}
+            jobsCount={jobCounts[job.type] ?? 0}
+          />
         ))}
       </div>
     </section>

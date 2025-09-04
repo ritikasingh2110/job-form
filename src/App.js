@@ -13,12 +13,12 @@ function App() {
     <Router>
       
 
-        <Routes>
+       <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/jobapplicationform" element={<JobApplicationForm />} />
           <Route path="/portal" element={<Portal />} />
           <Route path="/jobs/:id" element={<Jobs />} />
-        </Routes>
+          <Route path="/apply/:jobId" element={<JobApplicationForm />} />
+       </Routes>
       
     </Router>
   );
