@@ -8,13 +8,15 @@
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --border-radius: 12px;
     --transition: all 0.3s ease;
+    --heebo: 'Heebo', sans-serif;
+  --jost: 'Jost', sans-serif;
+  --pop: 'Poppins', sans-serif;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .Jobcontainer {
@@ -54,11 +56,13 @@
     font-size: 32px;
     margin-bottom: 10px;
     font-weight: 700;
+    font-family: var(--jost);
 }
 
 .form-header p {
     font-size: 18px;
     opacity: 0.9;
+    font-family: var(--heebo);
 }
 
 .form-header i {
@@ -75,6 +79,7 @@
     padding: 0 40px 40px;
     display: block; /* changed to block so all steps are visible on single page */
 }
+fo
 
 .form-step.active {
     display: block;
@@ -85,6 +90,7 @@
     color: var(--primary-color);
     font-size: 24px;
     font-weight: 600;
+    font-family: var(--jost);
 }
 
 /* Input Fields */
@@ -368,4 +374,24 @@ input[type="checkbox"] {
 #job-application-form .invalid select,
 #job-application-form .invalid textarea {
     border-color: var(--danger-color);
+}
+.back-btn {
+  position: fixed;       /* stays in place at top-left */
+  top: 20px;
+  left: 20px;
+  background-color: transparent;
+  color: #444;
+  border: 1px solid #ccc;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  z-index: 1000;
+}
+
+.back-btn:hover {
+  background-color: #f5f5f5;
+  border-color: #bbb;
 }

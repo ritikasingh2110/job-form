@@ -1,3 +1,8 @@
+:root {
+  --heebo: 'Heebo', sans-serif;
+  --jost: 'Jost', sans-serif;
+  --pop: 'Poppins', sans-serif;
+}
 /* ================= HEADER ================= */
 .header {
   background-color: #ffffff;
@@ -12,12 +17,22 @@
   justify-content: space-between;
   align-items: center;
 }
+.header-container h1 {
+  background: linear-gradient(to right, #FBA504, #726D7B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
 
 .logo {
   font-size: 1.8rem;
   font-weight: bold;
   color: #333333;
+  font-family: var(--jost);
 }
+
 
 .nav-links {
   display: flex;
@@ -25,18 +40,22 @@
   list-style: none;
 }
 
-.nav-link {
+.nav-links {
   text-decoration: none;
-  color: #666666;
+  color: #6222CC;
   font-size: 1rem;
   transition: color 0.3s ease;
-  font-family: 'Jost', sans-serif;
+  font-family: var(--pop);
 }
 
 .nav-link:hover {
-  color: #333333;
+  color: #6222CC;
 }
 
+.nav-links li a{
+  color: #6222CC;
+}
+ 
 /* ================= JOB SECTION ================= */
 .job-section {
   background-color: #f9fafb;
@@ -44,7 +63,7 @@
 }
 
 .job-title {
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--pop);
   font-size: 2rem;
   font-weight: bold;
   text-align: center;
@@ -93,12 +112,14 @@
   font-weight: bold;
   color: #333333;
   margin-bottom: 0.5rem;
+  font-family: var(--heebo);
 }
 
 .card-description {
   font-size: 0.95rem;
   color: #555555;
   margin-bottom: 1rem;
+  font-family: var(--heebo);
 }
 
 .card-count {
@@ -106,4 +127,5 @@
   font-size: 0.9rem;
   font-weight: bold;
   color: #0077cc;
+  font-family: var(--jost);
 }

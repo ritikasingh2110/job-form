@@ -8,13 +8,13 @@ function Header() {
   return (
     <header className="header">
       <div className="header-container">
-        <h1 className="logo">JobFinder</h1>
+        <h1 className="logo">WhiteCirlce Groups</h1>
         <nav>
           <ul className="nav-links">
-            <li><Link to="/Home">Home</Link></li>
+            <li><Link to="/">Home</Link></li>
             <li><Link to="/Jobs">Jobs</Link></li>
-            <li><Link to="/About">About</Link></li>
-            <li><Link to="/Contact">Contact</Link></li>
+            <li><Link to="/terms&conditions">About</Link></li>
+            <li><Link to="/privacy-policy">Contact</Link></li>
           </ul>
         </nav>
       </div>

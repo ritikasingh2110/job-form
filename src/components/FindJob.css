@@ -1,32 +1,40 @@
+:root {
+  --heebo: 'Heebo', sans-serif;
+  --jost: 'Jost', sans-serif;
+  --pop: 'Poppins', sans-serif;
+}
 /* ================= PAGE CONTAINER ================= */
 .jobs-page {
   min-height: 100vh;
   background: #f9fafb;
   padding: 2rem 1.5rem;
-  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #F4EEFB, #E9DDFB, #FAF4EC);
 }
 
 /* ================= TITLE ================= */
 .jobs-title {
+  text-decoration: underline;
+  font-family: var(--jost);
   text-align: center;
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 2.5rem;
-  color: #333333;
+  color: #6222CC;
 }
 
 /* ================= JOB LIST GRID ================= */
 .jobs-container {
+  /* background-color: #F6F4F9; */
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-width: 800px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 /* ================= JOB CARD ================= */
 .job-card {
-  background: #ffffff;
+  background-color: #F6F4F9;
   border-radius: 10px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -40,24 +48,28 @@
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
+.job-card strong {
+  color: #222;
+  font-family: var(--pop);
+}
 
 .job-card p {
   margin: 0;
   font-size: 1rem;
   color: #444;
   line-height: 1.4;
+  font-family: var(--heebo);
 }
 
-.job-card strong {
-  color: #222;
-}
+
 
 /* ================= APPLY BUTTON ================= */
 .apply-btn {
+  font-family: var(--pop);
   margin-top: 1rem;
-  width: 100%;
+  width: 25%;
   padding: 0.8rem;
-  background: #0077cc;
+  background: #6222CC;
   color: white;
   border: none;
   border-radius: 6px;
@@ -65,10 +77,12 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.3s ease;
+  display: block;       /* ensures it behaves like a block */
+  margin-left: auto;    /* pushes it to the right */
 }
 
 .apply-btn:hover {
-  background: #005fa3;
+  background: #FBA504;
 }
 
 /* ================= LOADING STATE ================= */
@@ -96,4 +110,18 @@
   100% {
     transform: rotate(360deg);
   }
+}
+.back-btn {
+  background-color: #eee;
+  border: none;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #ddd;
 }

@@ -45,23 +45,28 @@ export default function Jobs() {
 
   return (
     <div className="jobs-page">
+      {/* 🔙 Back Button */}
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        ⬅ Back
+      </button>
+
       <h2 className="jobs-title">
         {jobs.length > 0
-          ? `${jobs.length} jobs found for "${jobFunction}"`
+          ? `${jobs.length} Jobs found for "${jobFunction}"`
           : `No jobs found for "${jobFunction}"`}
       </h2>
 
       <div className="jobs-container">
         {jobs.map((job) => (
           <div key={job.id} className="job-card">
-            <p><strong>Title:</strong> {job.title}</p>
-            <p><strong>Company:</strong> {job.company}</p>
-            <p><strong>Location:</strong> {job.location}</p>
-            <p><strong>Type:</strong> {job.type}</p>
-            <p><strong>Salary:</strong> {job.salary} LPA</p>
-            <p><strong>Skills:</strong> {job.skills}</p>
-            <p><strong>Responsibilities:</strong> {job.responsibilities}</p>
-            <p><strong>Description:</strong> {job.description || "Not provided"}</p>
+            <p><strong>Title :</strong> {job.title}</p>
+            <p><strong>Company :</strong> {job.company}</p>
+            <p><strong>Location :</strong> {job.location}</p>
+            <p><strong>Type :</strong> {job.type}</p>
+            <p><strong>Salary :</strong> {job.salary} LPA</p>
+            <p><strong>Skills :</strong> {job.skills}</p>
+            <p><strong>Responsibilities :</strong> {job.responsibilities}</p>
+            <p><strong>Description :</strong> {job.description || "Not provided"}</p>
 
             <button
               className="apply-btn"
