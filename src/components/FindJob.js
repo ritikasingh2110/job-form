@@ -80,7 +80,7 @@ export default function Jobs() {
           <FaSearch className="search-icon" />
           <input
             type="text"
-            placeholder="Search jobs..."
+            placeholder="Search title or company name..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -88,41 +88,46 @@ export default function Jobs() {
       </div>
 
       <div className="jobs-container">
-        {jobs.map((job) => (
-          <div key={job.id} className="job-card">
-            <p>
-              <strong>Title :</strong> {job.title}
-            </p>
-            <p>
-              <strong>Company :</strong> {job.company}
-            </p>
-            <p>
-              <strong>Location :</strong> {job.location}
-            </p>
-            <p>
-              <strong>Type :</strong> {job.type}
-            </p>
-            <p>
-              <strong>Salary :</strong> {job.salary} LPA
-            </p>
-            <p>
-              <strong>Skills :</strong> {job.skills}
-            </p>
-            <p>
-              <strong>Responsibilities :</strong> {job.responsibilities}
-            </p>
-            <p>
-              <strong>Description :</strong> {job.description || "Not provided"}
-            </p>
+        {jobs
+    .filter((job) =>
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.company.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .map((job) => (
+      <div key={job.id} className="job-card">
+        <p>
+          <strong>Title :</strong> {job.title}
+        </p>
+        <p>
+          <strong>Company :</strong> {job.company}
+        </p>
+        <p>
+          <strong>Location :</strong> {job.location}
+        </p>
+        <p>
+          <strong>Type :</strong> {job.type}
+        </p>
+        <p>
+          <strong>Salary :</strong> {job.salary} LPA
+        </p>
+        <p>
+          <strong>Skills :</strong> {job.skills}
+        </p>
+        <p>
+          <strong>Responsibilities :</strong> {job.responsibilities}
+        </p>
+        <p>
+          <strong>Description :</strong> {job.description || "Not provided"}
+        </p>
 
-            <button
-              className="apply-btn"
-              onClick={() => navigate(`/apply/${job.id}`, { state: job })}
-            >
-              Apply Now
-            </button>
-          </div>
-        ))}
+        <button
+          className="apply-btn"
+          onClick={() => navigate(`/apply/${job.id}`, { state: job })}
+        >
+          Apply Now
+        </button>
+      </div>
+    ))}
       </div>
     </div>
   );
