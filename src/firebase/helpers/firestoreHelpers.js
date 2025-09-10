@@ -80,3 +80,69 @@ export const getJobsByType = async (jobType) => {
     throw error;
   }
 };
+
+
+// ✅ Find a job document by jobId
+const getJobDocByJobId = async (jobId) => {
+  try {
+    const q = query(jobsCollection, where("jobId", "==", jobId));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log(`No job found with jobId: ${jobId}`);
+      return null;
+    }
+
+    // Assuming jobId is unique, take the first document
+    const docSnap = querySnapshot.docs[0];
+    return docSnap;
+  } catch (error) {
+    console.error("Error finding job by jobId:", error);
+    throw error;
+  }
+};
+
+// ✅ Find and return job data by jobId
+export const findJobByJobId = async (jobId) => {
+  const jobDoc = await getJobDocByJobId(jobId);
+  if (!jobDoc) return null;
+  return { id: jobDoc.id, ...jobDoc.data() };
+};
+
+// ✅ Delete job by jobId
+export const deleteJobByJobId = async (jobId) => {
+  const jobDoc = await getJobDocByJobId(jobId);
+  if (!jobDoc) {
+    throw new Error(`Job with jobId ${jobId} not found.`);
+  }
+  await deleteDoc(doc(db, "jobs", jobDoc.id));
+  console.log(`Job with jobId ${jobId} deleted successfully.`);
+};
+
+// ✅ Update job by jobId
+export const updateJobByJobId = async (jobId, updatedData) => {
+  const jobDoc = await getJobDocByJobId(jobId);
+  if (!jobDoc) {
+    throw new Error(`Job with jobId ${jobId} not found.`);
+  }
+  await updateDoc(doc(db, "jobs", jobDoc.id), updatedData);
+  console.log(`Job with jobId ${jobId} updated successfully.`);
+};
+
+// ✅ Example method: get all jobs by jobFunction
+export const getJobsByFunction = async (jobFunction) => {
+  try {
+    const q = query(jobsCollection, where("jobFunction", "==", jobFunction));
+    const querySnapshot = await getDocs(q);
+
+    const jobs = querySnapshot.docs.map((docSnap) => ({
+      id: docSnap.id,
+      ...docSnap.data(),
+    }));
+
+    return jobs;
+  } catch (error) {
+    console.error("Error retrieving jobs by function:", error);
+    throw error;
+  }
+};
