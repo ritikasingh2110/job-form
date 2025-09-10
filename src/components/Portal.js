@@ -28,11 +28,17 @@ function Card({ title, description, jobsCount, type }) {
   return (
     <div
       className="card"
-      onClick={() => navigate(`/jobs/${encodeURIComponent(type)}`)} // ✅ navigate with jobFunction
+      onClick={() => navigate(`/jobs/${encodeURIComponent(type)}`)}
     >
       <div className="card-header">
         <h2 className="card-title">{title}</h2>
-        <span className="card-count">{jobsCount} Jobs</span>
+        <span className="card-count">
+          {jobsCount === undefined ? (
+            <div className="spinner small-spinner"></div>
+          ) : (
+            `${jobsCount} Jobs`
+          )}
+        </span>
       </div>
       <p className="card-description">{description}</p>
     </div>
@@ -41,8 +47,6 @@ function Card({ title, description, jobsCount, type }) {
 
 function JobSection() {
   const [jobCounts, setJobCounts] = useState({});
-
-  // ✅ match with Firestore "jobFunction" field
   const jobs = [
     { type: "Consultant", title: "Consultant", description: "Positions related to Consultant" },
     { type: "Engineering Services", title: "Engineering Services", description: "Positions related to Core Technology Services" },
@@ -65,8 +69,8 @@ function JobSection() {
         const q = query(collection(db, "jobs"), where("jobFunction", "==", job.type));
         const snapshot = await getDocs(q);
         counts[job.type] = snapshot.size;
+        setJobCounts((prev) => ({ ...prev, [job.type]: snapshot.size }));
       }
-      setJobCounts(counts);
     };
 
     fetchJobCounts();
@@ -82,7 +86,7 @@ function JobSection() {
             type={job.type}
             title={job.title}
             description={job.description}
-            jobsCount={jobCounts[job.type] ?? 0}
+            jobsCount={jobCounts[job.type]}
           />
         ))}
       </div>
