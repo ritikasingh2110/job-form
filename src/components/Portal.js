@@ -57,86 +57,61 @@ function Card({ title, description, jobsCount, type }) {
 function JobSection() {
   const [jobCounts, setJobCounts] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+  const [allJobs, setAllJobs] = useState([]);
+  const [matchedJob, setMatchedJob] = useState(null);
+  const navigate = useNavigate();
 
   const jobs = [
-    {
-      type: "Consultant",
-      title: "Consultant",
-      description: "Positions related to Consultant",
-    },
-    {
-      type: "Engineering Services",
-      title: "Engineering Services",
-      description: "Positions related to Core Technology Services",
-    },
-    {
-      type: "Enterprise Application Services",
-      title: "Enterprise Application Services",
-      description: "Positions related to Core Technology Services",
-    },
-    {
-      type: "Application Development and Maintenance",
-      title: "Application Development and Maintenance",
-      description: "Positions related to Core Technology Services",
-    },
-    {
-      type: "Developer",
-      title: "Developer",
-      description: "Positions related to Developer",
-    },
-    {
-      type: "Cloud and Infrastructure Services",
-      title: "Cloud and Infrastructure Services",
-      description: "Positions related to Core Technology Services",
-    },
-    {
-      type: "Data and Analytics",
-      title: "Data and Analytics",
-      description: "Positions related to Core Technology Services",
-    },
-    {
-      type: "Infosys Quality Engineering",
-      title: "Infosys Quality Engineering",
-      description: "Positions related to Technology Assurance",
-    },
-    {
-      type: "Digital Experience (DX)",
-      title: "Digital Experience (DX)",
-      description: "Positions related to Core Technology Services",
-    },
-    {
-      type: "Testing",
-      title: "Testing",
-      description: "Positions related to Testing",
-    },
-    {
-      type: "Business Consulting",
-      title: "Business Consulting",
-      description: "Positions related to Sales & Client Services",
-    },
-    {
-      type: "Cyber Security",
-      title: "Cyber Security",
-      description: "Positions related to Core Technology Services",
-    },
+    { type: "Consultant", title: "Consultant", description: "Positions related to Consultant" },
+    { type: "Engineering Services", title: "Engineering Services", description: "Positions related to Core Technology Services" },
+    { type: "Enterprise Application Services", title: "Enterprise Application Services", description: "Positions related to Core Technology Services" },
+    { type: "Application Development and Maintenance", title: "Application Development and Maintenance", description: "Positions related to Core Technology Services" },
+    { type: "Developer", title: "Developer", description: "Positions related to Developer" },
+    { type: "Cloud and Infrastructure Services", title: "Cloud and Infrastructure Services", description: "Positions related to Core Technology Services" },
+    { type: "Data and Analytics", title: "Data and Analytics", description: "Positions related to Core Technology Services" },
+    { type: "Infosys Quality Engineering", title: "Infosys Quality Engineering", description: "Positions related to Technology Assurance" },
+    { type: "Digital Experience (DX)", title: "Digital Experience (DX)", description: "Positions related to Core Technology Services" },
+    { type: "Testing", title: "Testing", description: "Positions related to Testing" },
+    { type: "Business Consulting", title: "Business Consulting", description: "Positions related to Sales & Client Services" },
+    { type: "Cyber Security", title: "Cyber Security", description: "Positions related to Core Technology Services" },
   ];
 
   useEffect(() => {
     const fetchJobCounts = async () => {
       const counts = {};
       for (const job of jobs) {
-        const q = query(
-          collection(db, "jobs"),
-          where("jobFunction", "==", job.type)
-        );
+        const q = query(collection(db, "jobs"), where("jobFunction", "==", job.type));
         const snapshot = await getDocs(q);
         counts[job.type] = snapshot.size;
         setJobCounts((prev) => ({ ...prev, [job.type]: snapshot.size }));
       }
     };
 
+    const fetchAllJobs = async () => {
+      const jobsCollection = collection(db, "jobs");
+      const snapshot = await getDocs(jobsCollection);
+      const jobsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setAllJobs(jobsData);
+    };
+
     fetchJobCounts();
+    fetchAllJobs();
   }, []);
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setMatchedJob(null);
+      return;
+    }
+    const term = searchTerm.trim().toLowerCase();
+    const foundJob = allJobs.find((job) =>
+      job.jobId.toString().toLowerCase() === term
+    );
+    setMatchedJob(foundJob || null);
+  }, [searchTerm, allJobs]);
 
   const filteredJobs = jobs.filter((job) =>
     job.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -149,27 +124,50 @@ function JobSection() {
         <FaSearch className="search-icon" />
         <input
           type="text"
-          placeholder="Search jobs by title..."
+          placeholder="Search jobs by ID, title..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
-      <div className="job-grid">
-        {filteredJobs.length > 0 ? (
-          filteredJobs.map((job) => (
-            <Card
-              key={job.type}
-              type={job.type}
-              title={job.title}
-              description={job.description}
-              jobsCount={jobCounts[job.type]}
-            />
-          ))
-        ) : (
-          <p className="no-results">No jobs found with this title.</p>
-        )}
-      </div>
+      {matchedJob ? (
+        <div className="matched-job">
+          <h2>Job Found by ID</h2>
+          <div className="job-card">
+            <p><strong>Job ID:</strong> {matchedJob.jobId}</p>
+            <p><strong>Title:</strong> {matchedJob.title}</p>
+            <p><strong>Company:</strong> {matchedJob.company}</p>
+            <p><strong>Location:</strong> {matchedJob.location}</p>
+            <p><strong>Type:</strong> {matchedJob.type}</p>
+            <p><strong>Salary:</strong> {matchedJob.salary} LPA</p>
+            <p><strong>Skills:</strong> {matchedJob.skills}</p>
+            <p><strong>Responsibilities:</strong> {matchedJob.responsibilities}</p>
+            <p><strong>Description:</strong> {matchedJob.description || "Not provided"}</p>
+            <button
+              className="apply-btn"
+              onClick={() => navigate(`/apply/${matchedJob.id}`, { state: matchedJob })}
+            >
+              Apply Now
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="job-grid">
+          {filteredJobs.length > 0 ? (
+            filteredJobs.map((job) => (
+              <Card
+                key={job.type}
+                type={job.type}
+                title={job.title}
+                description={job.description}
+                jobsCount={jobCounts[job.type]}
+              />
+            ))
+          ) : (
+            <p className="no-results">No jobs found with this title.</p>
+          )}
+        </div>
+      )}
     </section>
   );
 }
