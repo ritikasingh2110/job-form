@@ -55,6 +55,10 @@ export default function Jobs() {
     );
   }
 
+  const filteredJobs = jobs.filter((job) =>
+  job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  job.company.toLowerCase().includes(searchTerm.toLowerCase())
+);
   return (
     <div className="jobs-page">
       <button className="back-btn" onClick={() => navigate(-1)}>

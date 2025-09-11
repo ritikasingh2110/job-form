@@ -141,4 +141,33 @@
   display: inline-block;
   vertical-align: middle;
 }
+.job-search {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.job-search .search-icon {
+  position: absolute;
+  left: 21%;
+  font-size: 1rem;
+  color: #666;
+}
+
+.job-search input {
+  width: 60%;
+  padding: 0.6rem 1rem 0.6rem 2.5rem; /* extra padding-left for icon */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.job-search input:focus {
+  border-color: #6a5acd;
+  box-shadow: 0 0 5px rgba(106, 90, 205, 0.5);
+}
 
