@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import {
+  FaTrash,
+  FaEye,
+  FaSignOutAlt,
+  FaUndo,
+  FaSearch,
+  FaArrowRight,
+} from "react-icons/fa";
 import "./FindJob.css";
 
 export default function Jobs() {
@@ -10,12 +18,16 @@ export default function Jobs() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
         const jobsCollection = collection(db, "jobs");
-        const q = query(jobsCollection, where("jobFunction", "==", jobFunction));
+        const q = query(
+          jobsCollection,
+          where("jobFunction", "==", jobFunction)
+        );
         const querySnapshot = await getDocs(q);
 
         const jobsData = querySnapshot.docs.map((doc) => ({
@@ -46,28 +58,66 @@ export default function Jobs() {
   return (
     <div className="jobs-page">
       <button className="back-btn" onClick={() => navigate(-1)}>
-        ⬅ Back
+        ⬅
       </button>
 
-      <h2 className="jobs-title">
-        {jobs.length > 0
-          ? `${jobs.length} Jobs found for "${jobFunction}"`
-          : `No jobs found for "${jobFunction}"`}
-      </h2>
+      <div className="jobs-header">
+        <h2 className="jobs-title">
+          {jobs.length > 0
+            ? `${jobs.length} Jobs found for "${jobFunction}"`
+            : `No jobs found for "${jobFunction}"`}
+        </h2>
 
-      {jobs.length > 0 ? (
-        <div className="jobs-container">
-          {jobs.map((job) => (
+        <div className="jobs-search">
+          <FaSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search by ID, title, or company..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="jobs-container">
+        {jobs
+          .filter((job) => {
+            const term = searchTerm.trim().toLowerCase();
+            return (
+              job.title.toLowerCase().includes(term) ||
+              job.company.toLowerCase().includes(term) ||
+              job.jobId.toString().toLowerCase().includes(term)
+            );
+          })
+          .map((job) => (
             <div key={job.id} className="job-card">
-              <p><strong>Job ID :</strong> {job.jobId}</p>
-              <p><strong>Title :</strong> {job.title}</p>
-              <p><strong>Company :</strong> {job.company}</p>
-              <p><strong>Location :</strong> {job.location}</p>
-              <p><strong>Type :</strong> {job.type}</p>
-              <p><strong>Salary :</strong> {job.salary} LPA</p>
-              <p><strong>Skills :</strong> {job.skills}</p>
-              <p><strong>Responsibilities :</strong> {job.responsibilities}</p>
-              <p><strong>Description :</strong> {job.description || "Not provided"}</p>
+              <p>
+                <strong>Job ID :</strong> {job.jobId}
+              </p>
+              <p>
+                <strong>Title :</strong> {job.title}
+              </p>
+              <p>
+                <strong>Company :</strong> {job.company}
+              </p>
+              <p>
+                <strong>Location :</strong> {job.location}
+              </p>
+              <p>
+                <strong>Type :</strong> {job.type}
+              </p>
+              <p>
+                <strong>Salary :</strong> {job.salary} LPA
+              </p>
+              <p>
+                <strong>Skills :</strong> {job.skills}
+              </p>
+              <p>
+                <strong>Responsibilities :</strong> {job.responsibilities}
+              </p>
+              <p>
+                <strong>Description :</strong> {job.description || "Not provided"}
+              </p>
 
               <button
                 className="apply-btn"
@@ -77,12 +127,7 @@ export default function Jobs() {
               </button>
             </div>
           ))}
-        </div>
-      ) : (
-        <div className="jobs-loading">
-          <p>No jobs available in this category.</p>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
