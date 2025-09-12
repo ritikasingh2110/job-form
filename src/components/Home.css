@@ -74,7 +74,14 @@
   justify-content: center;
   gap: 25px;
 }
-
+.service-card{
+  background: linear-gradient(
+    to right,
+    rgba(244, 238, 251, 0.7),  /* lighter lavender */
+    rgba(233, 221, 251, 0.7),  /* lighter violet */
+    rgba(250, 244, 236, 0.7)   /* lighter cream */
+  );
+}
 .card {
   background: linear-gradient(
     to right,

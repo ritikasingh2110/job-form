@@ -16,13 +16,13 @@ function Header() {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/Jobs">Jobs</Link>
+              <Link to="/services">Services</Link>
             </li>
             <li>
               <Link to="/terms&conditions">About</Link>
             </li>
             <li>
-              <Link to="/privacy-policy">Contact</Link>
+              <Link to="/contact">Contact</Link>
             </li>
           </ul>
         </nav>
