@@ -1,8 +1,8 @@
 // src/components/Home.js
 
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './Home.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import "./Home.css";
 
 const Home = () => {
   return (
@@ -10,9 +10,16 @@ const Home = () => {
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
-          <h1>Welcome to <span>WhiteCircle!</span></h1>
-          <p>Your Future Starts Here. Explore careers and services designed for innovation.</p>
-          <Link to="/Portal" className="cta-btn">Find Job</Link>
+          <h1>
+            Welcome to <span>WhiteCircle!</span>
+          </h1>
+          <p>
+            Your Future Starts Here. Explore careers and services designed for
+            innovation.
+          </p>
+          <Link to="/Portal" className="cta-btn">
+            Find Job
+          </Link>
         </div>
       </section>
 
@@ -22,18 +29,44 @@ const Home = () => {
         <div className="service-cards">
           <div className="card">
             <h3>IT Consulting</h3>
-            <p>We provide end-to-end tech consulting for startups and enterprises.</p>
+            <p>
+              We provide end-to-end tech consulting for startups and
+              enterprises.
+            </p>
           </div>
           <div className="card">
             <h3>Web Development</h3>
-            <p>Custom web applications built with scalable and modern frameworks.</p>
+            <p>
+              Custom web applications built with scalable and modern frameworks.
+            </p>
           </div>
           <div className="card">
             <h3>Cloud Solutions</h3>
             <p>Reliable and secure cloud migration and DevOps services.</p>
           </div>
         </div>
-        <Link to="/services" className="explore-btn">Explore More</Link>
+        <Link to="/services" className="explore-btn">
+          Explore More
+        </Link>
+      </section>
+
+      <section className="products-preview">
+        <h2>Our Products</h2>
+        <div className="product-card">
+          <img
+            src="./IMS.jpg"
+            alt="Inventory Management Software"
+            className="product-image"
+          />
+          <div className="product-content">
+            <h3>Inventory Management Software</h3>
+            <p>
+              Our Inventory Management Software helps businesses efficiently
+              track stock, streamline supply chain operations, and automate
+              reordering for maximum productivity.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Footer Section */}
@@ -48,15 +81,27 @@ const Home = () => {
           <div className="footer-col">
             <h4>Quick Links</h4>
             <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/portal">Jobs</Link></li>
-              <li><Link to="/services">Services</Link></li>
-              <li><Link to="/terms&conditions">Terms & Conditions</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/portal">Jobs</Link>
+              </li>
+              <li>
+                <Link to="/services">Services</Link>
+              </li>
+              <li>
+                <Link to="/terms&conditions">Terms & Conditions</Link>
+              </li>
+              <li>
+                <Link to="/contact">Contact</Link>
+              </li>
             </ul>
           </div>
         </div>
-        <p className="footer-bottom">&copy; 2025 WhiteCircle. All rights reserved.</p>
+        <p className="footer-bottom">
+          &copy; 2025 WhiteCircle. All rights reserved.
+        </p>
       </footer>
     </div>
   );
