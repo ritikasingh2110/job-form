@@ -1,0 +1,134 @@
+:root {
+  --heebo: 'Heebo', sans-serif;
+  --jost: 'Jost', sans-serif;
+  --pop: 'Poppins', sans-serif;
+}
+/* ================= HEADER ================= */
+.header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header-container h1 {
+  background: linear-gradient(to right, #FBA504, #726D7B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333333;
+  font-family: var(--jost);
+}
+
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-links {
+  text-decoration: none;
+  color: #6222CC;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+  font-family: var(--pop);
+}
+
+.nav-link:hover {
+  color: #6222CC;
+}
+
+.nav-links li a{
+  color: #6222CC;
+}
+ 
+.contact-section {
+  padding: 80px 20px;
+  background: #F6F4F9;
+  display: flex;
+  justify-content: center;
+}
+
+.contact-container {
+  max-width: 600px;
+  width: 100%;
+  background: linear-gradient(to right, #F4EEFB, #E9DDFB, #f9f7f4);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.contact-heading {
+    font-family: var(--pop);
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.contact-form .form-group {
+    font-family: var(--jost);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.contact-form label {
+    font-family: var(--jost);
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: #6222CC;
+  box-shadow: 0 0 6px rgba(160, 196, 255, 0.4);
+}
+
+.contact-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.send-btn {
+    font-family: var(--heebo);
+  background: #6222CC;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.send-btn:hover {
+  background: #FBA504;
+}

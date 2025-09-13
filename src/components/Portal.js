@@ -16,13 +16,13 @@ function Header() {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/Jobs">Jobs</Link>
+              <Link to="/services">Services</Link>
             </li>
             <li>
               <Link to="/terms&conditions">About</Link>
             </li>
             <li>
-              <Link to="/privacy-policy">Contact</Link>
+              <Link to="/contact">Contact</Link>
             </li>
           </ul>
         </nav>
@@ -57,6 +57,9 @@ function Card({ title, description, jobsCount, type }) {
 function JobSection() {
   const [jobCounts, setJobCounts] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
+  const [allJobs, setAllJobs] = useState([]);
+  const [matchedJob, setMatchedJob] = useState(null);
+  const navigate = useNavigate();
 
   const jobs = [
     {
@@ -135,8 +138,31 @@ function JobSection() {
       }
     };
 
+    const fetchAllJobs = async () => {
+      const jobsCollection = collection(db, "jobs");
+      const snapshot = await getDocs(jobsCollection);
+      const jobsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setAllJobs(jobsData);
+    };
+
     fetchJobCounts();
+    fetchAllJobs();
   }, []);
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setMatchedJob(null);
+      return;
+    }
+    const term = searchTerm.trim().toLowerCase();
+    const foundJob = allJobs.find((job) =>
+      job.jobId.toString().toLowerCase() === term
+    );
+    setMatchedJob(foundJob || null);
+  }, [searchTerm, allJobs]);
 
   const filteredJobs = jobs.filter((job) =>
     job.title.toLowerCase().includes(searchTerm.toLowerCase())
